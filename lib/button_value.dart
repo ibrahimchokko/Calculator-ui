@@ -9,6 +9,7 @@ static const String add = "+";
 static const String subtract = "-";
 static const String calculate = "=";
 static const String dot = ".";
+static const String bracs = "()";
 static const String n0 = "0";
 static const String n1 = "1";
 static const String n2 = "2";
@@ -40,5 +41,6 @@ add,
 n0,
 dot,
 calculate,
+bracs,
 ];
 }

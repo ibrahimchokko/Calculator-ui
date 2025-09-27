@@ -43,10 +43,10 @@ class _MyWidgetState extends State<CalculatorHome> {
                 Color buttonColor;
                 if (e == 'C' || e == 'D') {
                   buttonColor = Colors.blue;
-                } else if (e == '-'|| e == '+'|| e == '÷'|| e == '×'|| e == '%') {
+                } else if (e == '-'|| e == '+'|| e == '÷'|| e == '×'|| e == '%' || e == '()') {
                   buttonColor = Colors.green;
                 } else if (e == '=') {
-                  buttonColor = Colors.red;
+                  buttonColor = Colors.deepOrangeAccent;
                 } else {
                   buttonColor = Colors.black54;
                 }
@@ -58,7 +58,7 @@ class _MyWidgetState extends State<CalculatorHome> {
                       backgroundColor: buttonColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(70),
-                        side: BorderSide(color: Colors.white, width: 2),
+                        side: BorderSide(color: Colors.grey, width: 1),
                       ),
                     ),
                     onPressed: () {},
