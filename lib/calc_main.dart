@@ -26,7 +26,6 @@ class _MyWidgetState extends State<CalculatorHome> {
                   margin: EdgeInsets.only(top: 50, bottom: 10, left: 10, right: 10),
                   height: 130,
                   width: double.infinity,
-                  color: Colors.grey.shade300,
                   child: Text('0', style: TextStyle(
                     fontSize: 50, 
                     fontWeight: FontWeight.bold,
@@ -39,17 +38,40 @@ class _MyWidgetState extends State<CalculatorHome> {
 
             //Buttons
             Wrap(
-              children: Btn.buttonValues.map((e) => SizedBox(
-                width: MediaQuery.of(context).size.width / 4,
-                height: MediaQuery.of(context).size.width / 4,
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(e, style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                  ),),
-                ),
-              )).toList(),
+              children: Btn.buttonValues.map((e) {
+                // Example: assign color based on value
+                Color buttonColor;
+                if (e == 'C' || e == 'D') {
+                  buttonColor = Colors.blue;
+                } else if (e == '-'|| e == '+'|| e == '÷'|| e == '×'|| e == '%') {
+                  buttonColor = Colors.green;
+                } else if (e == '=') {
+                  buttonColor = Colors.red;
+                } else {
+                  buttonColor = Colors.black54;
+                }
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width / 4,
+                  height: MediaQuery.of(context).size.width / 4,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: buttonColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(70),
+                        side: BorderSide(color: Colors.white, width: 2),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      e,
+                      style: const TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
             )
           ],
         ),
