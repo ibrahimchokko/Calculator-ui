@@ -1,5 +1,6 @@
 import 'package:calaulator_app_ui/button_value.dart';
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class CalculatorHome extends StatefulWidget {
   const CalculatorHome({super.key});
@@ -9,6 +10,21 @@ class CalculatorHome extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<CalculatorHome> {
+  String input = '';
+  String result = '0';
+
+  String _evaluate(String expr) {
+    try {
+      Parser p = Parser();
+      Expression exp = p.parse(expr.replaceAll('×', '*').replaceAll('÷', '/'));
+      ContextModel cm = ContextModel();
+      double eval = exp.evaluate(EvaluationType.REAL, cm);
+      return eval.toString();
+    } catch (e) {
+      return 'Error';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,22 +32,24 @@ class _MyWidgetState extends State<CalculatorHome> {
         bottom: false,
         child: Column(
           children: [
-
             //Output
             Expanded(
               child: SingleChildScrollView(
+                reverse: true,
                 child: Container(
                   alignment: Alignment.bottomRight,
                   padding: EdgeInsets.all(20),
                   margin: EdgeInsets.only(top: 50, bottom: 10, left: 10, right: 10),
                   height: 130,
                   width: double.infinity,
-                  child: Text('0', style: TextStyle(
-                    fontSize: 50, 
-                    fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.end,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(input, style: const TextStyle(fontSize: 32)),
+                      Text(result, style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -39,7 +57,6 @@ class _MyWidgetState extends State<CalculatorHome> {
             //Buttons
             Wrap(
               children: Btn.buttonValues.map((e) {
-                // Example: assign color based on value
                 Color buttonColor;
                 if (e == 'C' || e == 'D') {
                   buttonColor = Colors.blue;
@@ -58,10 +75,25 @@ class _MyWidgetState extends State<CalculatorHome> {
                       backgroundColor: buttonColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(70),
-                        side: BorderSide(color: Colors.grey, width: 1),
+                        side: const BorderSide(color: Colors.grey, width: 1),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState((){
+                        if (e == 'C'){
+                          input = '';
+                          result = '0';
+                        } else if (e == 'D'){
+                          if (input.isNotEmpty){
+                            input = input.substring(0, input.length - 1);
+                          }
+                        } else if (e == '='){
+                          result = _evaluate(input);
+                        } else {
+                          input += e;
+                        }
+                      });
+                    },
                     child: Text(
                       e,
                       style: const TextStyle(
@@ -72,7 +104,7 @@ class _MyWidgetState extends State<CalculatorHome> {
                   ),
                 );
               }).toList(),
-            )
+            ),
           ],
         ),
       ),
